@@ -14,7 +14,6 @@ class Home extends StatefulWidget {
 
 
 
-
   @override
   State<StatefulWidget> createState() {
 
@@ -24,11 +23,11 @@ class Home extends StatefulWidget {
 
 
 class _HomeState extends State<Home> {
-  var amount = 0;
 
   void initState(){
     Provider.of<TransactionProvider>(context,listen: false).initData();
-    amount = int.parse(calculateAmount());
+    globals.amount = int.parse(Provider.of<TransactionProvider>(context,listen: false).calculateAmount());
+    loadData();
   }
 
   final _headerText = const TextStyle(fontSize: 18.0);
@@ -38,13 +37,7 @@ class _HomeState extends State<Home> {
     return Scaffold(
         appBar: AppBar(
           title: Text(title.appName),
-        actions: [
-          IconButton(icon: Icon(Icons.refresh), onPressed: (){
-            setState(() {
-              amount = int.parse(calculateAmount());
-            });
-          })
-        ],),
+        ),
         body:
 
         Column(
@@ -63,31 +56,17 @@ class _HomeState extends State<Home> {
                 color: Colors.black,
               ),
             ),
-           // Text(amount.toString(),style: new TextStyle(fontSize: 25,color: Colors.black),)
-           //  ,
-
-            Consumer(
-                builder: (context,TransactionProvider provider,Widget child){
-                  return
-                    InkWell(
-                      child: Text(provider.allamount.toString(),style: new TextStyle(fontSize: 25,color: Colors.black)),
-                      onTap: () {
-                        setState(() {
-                          provider.allamount = provider.calculateAmount();
-                        });
-                      },
-                    );
-
-                }),
+           Text(globals.amount.toString(),style: new TextStyle(fontSize: 25,color: Colors.black),)
+            ,
 
            Consumer(
              builder: (context,TransactionProvider provider,Widget child){
 
                return
                Expanded(child:ListView.builder(
-                 itemCount: provider.inapptransactions.length,
+                 itemCount: provider.transactions.length,
                  itemBuilder: (context,int position){
-                   MoneyModels data = provider.inapptransactions[position];
+                   MoneyModels data = provider.transactions[position];
                    return Card(
                      elevation: 5,
                      margin: const EdgeInsets.symmetric(vertical: 8,horizontal: 5),
@@ -135,24 +114,8 @@ class _HomeState extends State<Home> {
     );
   }
 
-
-  String calculateAmount(){
-    int income = 0;
-    int expense = 0;
-    int total = 0;
-
-    for(var record in Provider.of<TransactionProvider>(context,listen: false).loadAll()){
-
-      if(record.type == "Income"){
-        income = income.toInt() + record.amount.toInt();
-      }else if (record.type == "Expense"){
-        expense = expense.toInt() + record.amount.toInt();
-      }
-    }
-    total = income - expense;
-    globals.amount = total;
-
-    return total.toString();
+  void loadData(){
+    Provider.of<TransactionProvider>(context,listen: false).calculateAmount();
   }
 
 

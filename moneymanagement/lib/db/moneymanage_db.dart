@@ -17,7 +17,6 @@ class TransactionDB{
   TransactionDB({this.DBname});
   String totalamount;
 
-
   Future <Database> openDB() async{
 
     Directory appDiretory = await getApplicationDocumentsDirectory();
@@ -49,7 +48,7 @@ Future<int>  InsertData(MoneyModels transaction) async{
 
    var db = await this.openDB();
    var store = intMapStoreFactory.store("expense");
-   List transactionList = <MoneyModels>[];
+   List transactionList = List<MoneyModels>();
    var snapshot = await store.find(db,finder: Finder(sortOrders: [SortOrder(Field.key,false)]));
 
    for(var record in snapshot){
@@ -61,14 +60,8 @@ Future<int>  InsertData(MoneyModels transaction) async{
          );
 
    }
-   db.close();
-
-
    return transactionList;
   }
-
-
-
 
 
 

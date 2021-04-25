@@ -3,17 +3,13 @@ import 'package:moneymanagement/TransactionsProvider.dart';
 import 'package:moneymanagement/main.dart';
 import 'package:moneymanagement/models/moneymanagementModel.dart';
 import 'package:moneymanagement/screen/home.dart';
-import 'package:moneymanagement/screen/launcher.dart';
 import 'package:provider/provider.dart';
 import 'package:intl/intl.dart';
-import 'package:moneymanagement/globals.dart' as globals;
 
 
 
 class addData extends StatefulWidget {
   static const routeName = '/addData';
-
-
 
   @override
   State<StatefulWidget> createState() {
@@ -85,24 +81,11 @@ class _addData extends State<addData> {
                   Scaffold.of(context).showSnackBar(SnackBar(
                     content: Text("Add Data."),
                   ));
-
-
-
-                  final BottomNavigationBar navigationBar = globals.globalKey.currentWidget;
-                  navigationBar.onTap(0);
-                  setState(() {
-                    Provider.of<TransactionProvider>(context,listen: false).initData();
-                  });
-
-
-
-
-                  // Navigator.push(context, MaterialPageRoute(
-                  //     fullscreenDialog: true,
-                  //     builder: (context){
-                  //   return MyApp();
-                  // }));
-
+                  Navigator.push(context, MaterialPageRoute(
+                      fullscreenDialog: true,
+                      builder: (context){
+                    return MyApp();
+                  }));
 
                 }else{
                   Scaffold.of(context).showSnackBar(SnackBar(
